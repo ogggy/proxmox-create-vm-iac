@@ -1,0 +1,13 @@
+pm_api_url = "https://YOUR_PROXMOX:8006/api2/json"
+
+pm_api_token_id     = "user@pam!token"
+pm_api_token_secret = "REPLACE_ME"
+
+target_node  = "pve"
+template_name = "ubuntu-template"
+
+vm_name    = "k8s-node-1"
+vm_ip      = "10.67.10.10"
+vm_gateway = "10.67.10.1"
+
+ssh_key = "ssh-ed25519 AAAA..."

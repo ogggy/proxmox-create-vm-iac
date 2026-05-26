@@ -1,0 +1,64 @@
+terraform {
+  required_providers {
+    proxmox = {
+      source  = "telmate/proxmox"
+      version = "3.0.1-rc4"
+    }
+  }
+}
+
+provider "proxmox" {
+  pm_api_url          = var.pm_api_url
+  pm_api_token_id     = var.pm_api_token_id
+  pm_api_token_secret = var.pm_api_token_secret
+  pm_tls_insecure     = var.pm_tls_insecure
+}
+
+resource "proxmox_vm_qemu" "test_server" {
+  #count = var.vm_count
+
+  name        = var.vm_name
+  target_node = var.target_node
+  clone       = var.template_name
+
+  agent   = 1
+  os_type = "cloud-init"
+
+  cores   = var.vm_cores
+  sockets = var.vm_sockets
+  cpu     = var.vm_cpu
+  memory  = var.vm_memory
+
+  scsihw   = "virtio-scsi-pci"
+  bootdisk = "scsi0"
+
+  disk {
+    slot     = "scsi0"
+    size     = var.vm_disk_size
+    type     = "disk"
+    storage  = var.vm_storage
+    iothread = true
+  }
+
+  disk {
+    size     = var.vm_ide_disk_size
+    slot    = "ide2"
+    type    = "cloudinit"
+    storage = var.vm_storage
+}
+
+  network {
+    model  = "virtio"
+    bridge = var.vm_bridge
+  }
+
+  lifecycle {
+    ignore_changes = [
+      network,
+    ]
+  }
+
+  ipconfig0 = "ip=${var.vm_ip}/24,gw=${var.vm_gateway}"
+
+  sshkeys = var.ssh_key
+}

@@ -1,0 +1,5 @@
+pveum role add TerraformProv -privs "VM.Allocate VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Console VM.Monitor VM.PowerMgmt VM.Audit VM.Migrate Datastore.AllocateSpace Datastore.Audit Sys.Audit Sys.Modify Sys.Console Pool.Allocate SDN.Use"
+
+pveum aclmod / -user tfpve@pam -role TerraformProv
+
+pveum user permissions tfpve@pam
