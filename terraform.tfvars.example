@@ -6,8 +6,35 @@ pm_api_token_secret = "REPLACE_ME"
 target_node  = "pve"
 template_name = "ubuntu-template"
 
-vm_name    = "k8s-node-1"
-vm_ip      = "10.67.10.10"
+vm_storage = "local-lvm"
+vm_bridge  = "vmbr1"
 vm_gateway = "10.67.10.1"
 
 ssh_key = "ssh-ed25519 AAAA..."
+
+
+nodes = {
+  master1 = {
+    ip     = "IP"
+    cores  = 2
+    memory = 4096
+    disk   = "20G"
+    role   = "master"
+  }
+
+  worker1 = {
+    ip     = "IP"
+    cores  = 2
+    memory = 2048
+    disk   = "20G"
+    role   = "worker"
+  }
+
+  worker2 = {
+    ip     = "IP"
+    cores  = 2
+    memory = 2048
+    disk   = "20G"
+    role   = "worker"
+  }
+}

@@ -1,6 +1,11 @@
-variable "proxmox_provider_version" {
-  type    = string
-  default = "2.9.14"
+variable "nodes" {
+  type = map(object({
+    ip      = string
+    cores   = number
+    memory  = number
+    disk    = string
+    role    = string
+  }))
 }
 
 variable "pm_api_url" {
@@ -86,10 +91,12 @@ variable "vm_bridge" {
   default = "vmbr1"
 }
 
-variable "vm_ip" {
-  type = string
-}
+# variable "vm_ip" {
+#   type = string
+# }
 
 variable "vm_gateway" {
   type = string
+  default = "10.67.10.1"
 }
+
