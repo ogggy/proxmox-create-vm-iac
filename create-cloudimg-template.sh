@@ -1,10 +1,14 @@
-wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
+#!/bin/bash
+set -euo pipefail
+
+### Download Ubuntu Cloud Image
+### wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 
 export STORAGE_POOL="local-lvm"
 export VM_ID="10000"
-export VM_NAME="ubuntu-20.04-cloudimg"
+export VM_NAME="ubuntu-22.04-cloudimg"
 export VM_NET="vmbr1"
-export IMG="focal-server-cloudimg-amd64.img"
+export IMG="jammy-server-cloudimg-amd64.img"
 
 # qm destroy 10000 --purge
 

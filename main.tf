@@ -17,6 +17,7 @@ provider "proxmox" {
 resource "proxmox_vm_qemu" "k8s" {
   for_each = var.nodes
 
+  vmid        = each.value.vmid
   name        = "k8s-${each.key}"
   target_node = var.target_node
   clone       = var.template_name
@@ -52,8 +53,36 @@ resource "proxmox_vm_qemu" "k8s" {
   }
 
   ipconfig0 = "ip=${each.value.ip}/24,gw=${var.vm_gateway}"
-  ciuser    = "ops"
+  ciuser    = var.vm_ciuser
   sshkeys   = var.ssh_key
+
+  provisioner "file" {
+    source      = "prepare-k8s-node.sh"
+    destination = "/tmp/prepare-k8s-node.sh"
+
+    connection {
+      type        = "ssh"
+      host        = each.value.ip
+      user        = var.vm_ciuser
+      private_key = file(var.private_key_path)
+    }
+  }
+
+  provisioner "remote-exec" {
+     inline = [
+      "chmod +x /tmp/prepare-k8s-node.sh",
+      "sudo bash /tmp/prepare-k8s-node.sh > /tmp/prepare-k8s-node.log 2>&1",
+      "grep '^\\==== [Step' /tmp/prepare-k8s-node.log || true",
+      "tail -1 /tmp/prepare-k8s-node.log || true"
+    ]
+
+    connection {
+      type        = "ssh"
+      host        = each.value.ip
+      user        = var.vm_ciuser
+      private_key = file(var.private_key_path)
+    }
+  }
 
   tags = each.value.role
 }

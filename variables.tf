@@ -1,5 +1,6 @@
 variable "nodes" {
   type = map(object({
+    vmid   = number
     ip      = string
     cores   = number
     memory  = number
@@ -100,3 +101,13 @@ variable "vm_gateway" {
   default = "10.67.10.1"
 }
 
+variable "vm_ciuser" {
+  type = string
+  default = "ops"
+}
+
+variable "private_key_path" {
+  type      = string
+  default   = "~/.ssh/promox-tf"
+  sensitive = true
+}
